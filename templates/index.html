@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+
+    <title>Weather Forcast</title>
+
+    <!-- Loading third party fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='fonts/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- Loading main css file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!--[if lt IE 9]>
+		<script src="{{ url_for('static', filename='js/ie-support/html5.js') }} "></script>
+		<script src="{{ url_for('static', filename='js/ie-support/respond.js') }}"></script>
+		<![endif]-->
+
+</head>
+
+
+<body>
+
+<div class="site-content">
+    <div class="site-header">
+        <div class="container">
+            <a href="index.html" class="branding">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="" class="logo">
+                <div class="logo-type">
+                    <h1 class="site-title">Weather Forcast</h1>
+                    <small class="site-description">Beneath the Weather</small>
+                </div>
+            </a>
+
+            <!-- Default snippet for navigation -->
+            <div class="main-navigation">
+                <button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+                <ul class="menu">
+                    <li class="menu-item current-menu-item"><a href="index.html">Home</a></li>
+                    <li class="menu-item"><a href="news.html">News</a></li>
+                    <li class="menu-item"><a href="live-cameras.html">Live cameras</a></li>
+                    <li class="menu-item"><a href="photos.html">Photos</a></li>
+                    <li class="menu-item"><a href="contact.html">Contact</a></li>
+                </ul> <!-- .menu -->
+            </div> <!-- .main-navigation -->
+
+            <div class="mobile-navigation"></div>
+
+        </div>
+    </div> <!-- .site-header -->
+
+    <div class="hero" data-bg-image="{{ url_for('static', filename='images/banner.png') }}">
+        <div class="container">
+            <form method="POST" action="/temperature" class="find-location">
+                <input type="text" name="zip" placeholder="Find your location...">
+                <input type="submit" name="zip" value="Find">
+            </form>
+
+
+        </div>
+    </div>
+
+    <div class="forecast-table">
+        <div class="container">
+            <div class="forecast-container">
+                <div class="today forecast">
+                    <div class="forecast-header">
+                        <div class="day">
+                            <p id="demo"></p>
+                            <script>
+                                var d = new Date();
+                                var weekday = new Array(7);
+                                weekday[0] = "Sunday";
+                                weekday[1] = "Monday";
+                                weekday[2] = "Tuesday";
+                                weekday[3] = "Wednesday";
+                                weekday[4] = "Thursday";
+                                weekday[5] = "Friday";
+                                weekday[6] = "Saturday";
+                                var n = weekday[d.getDay()];
+                                document.getElementById("demo").innerHTML = n;
+                            </script>
+                        </div>
+                        <div class="date"><p><span id="datetime"></span></p>
+                            <script>
+                                var dt = new Date();
+                                document.getElementById("datetime").innerHTML = dt.getDate();
+                            </script>
+                        </div>
+                    </div> <!-- .forecast-header -->
+                    <div class="forecast-content">
+                        <div class="location">{{ city_name }}</div>
+                        <div class="degree">
+                            <div class="num">{{ temp }}<sup>o</sup>C</div>
+                            <div class="forecast-icon">
+                                <img src="{{ url_for('static', filename='images/icons/icon-1.svg') }}" alt="" width=90>
+                            </div>
+                        </div>
+
+                        <span><img src="{{ url_for('static', filename='images/icon-umberella.png') }}" alt="">20%</span>
+                        <span><img src="{{ url_for('static', filename='images/icon-wind.png') }}"
+                                   alt="">{{ wind_speed }} km/h</span>
+                        <span><img src="{{ url_for('static', filename='images/icon-compass.png') }}"
+                                   alt="">{{ Pressure }} hpa</span>
+                    </div>
+                </div>
+                <div class="forecast">
+                    <div class="forecast-header">
+                        <div class="day"><p id="sam"></p>
+                            <script>
+                                var d = new Date();
+                                var weekday = new Array(7);
+                                weekday[0] = "Sunday";
+                                weekday[1] = "Monday";
+                                weekday[2] = "Tuesday";
+                                weekday[3] = "Wednesday";
+                                weekday[4] = "Thursday";
+                                weekday[5] = "Friday";
+                                weekday[6] = "Saturday";
+                                var n = weekday[d.getDay() + 1];
+                                document.getElementById("sam").innerHTML = n;
+                            </script>
+                        </div>
+                    </div> <!-- .forecast-header -->
+                    <div class="forecast-content">
+                        <div class="forecast-icon">
+                            <img src="{{ url_for('static', filename='images/icons/icon-3.svg') }}" alt="" width=48>
+                        </div>
+                        <div class="degree">23<sup>o</sup>C</div>
+                        <small>18<sup>o</sup></small>
+                    </div>
+                </div>
+                <div class="forecast">
+                    <div class="forecast-header">
+                        <div class="day"><p id="day"></p>
+                            <script>
+                                var d = new Date();
+                                var weekday = new Array(7);
+                                weekday[0] = "Sunday";
+                                weekday[1] = "Monday";
+                                weekday[2] = "Tuesday";
+                                weekday[3] = "Wednesday";
+                                weekday[4] = "Thursday";
+                                weekday[5] = "Friday";
+                                weekday[6] = "Saturday";
+                                var n = weekday[d.getDay() + 2];
+                                document.getElementById("day").innerHTML = n;
+                            </script>
+                        </div>
+                    </div> <!-- .forecast-header -->
+                    <div class="forecast-content">
+                        <div class="forecast-icon">
+                            <img src="{{ url_for('static', filename='images/icons/icon-5.svg') }}" alt="" width=48>
+                        </div>
+                        <div class="degree">23<sup>o</sup>C</div>
+                        <small>18<sup>o</sup></small>
+                    </div>
+                </div>
+                <div class="forecast">
+                    <div class="forecast-header">
+                        <div class="day"><p id="day2"></p>
+                            <script>
+                                var d = new Date();
+                                var weekday = new Array(7);
+                                weekday[0] = "Sunday";
+                                weekday[1] = "Monday";
+                                weekday[2] = "Tuesday";
+                                weekday[3] = "Wednesday";
+                                weekday[4] = "Thursday";
+                                weekday[5] = "Friday";
+                                weekday[6] = "Saturday";
+                                var n = weekday[d.getDay() - 4];
+                                document.getElementById("day2").innerHTML = n;
+                            </script>
+                        </div>
+                    </div> <!-- .forecast-header -->
+                    <div class="forecast-content">
+                        <div class="forecast-icon">
+                            <img src="{{ url_for('static', filename='images/icons/icon-7.svg') }}" alt="" width=48>
+                        </div>
+                        <div class="degree">23<sup>o</sup>C</div>
+                        <small>18<sup>o</sup></small>
+                    </div>
+                </div>
+                <div class="forecast">
+                    <div class="forecast-header">
+                        <div class="day"><p id="s"></p>
+                            <script>
+                                var d = new Date();
+                                var weekday = new Array(7);
+                                weekday[0] = "Sunday";
+                                weekday[1] = "Monday";
+                                weekday[2] = "Tuesday";
+                                weekday[3] = "Wednesday";
+                                weekday[4] = "Thursday";
+                                weekday[5] = "Friday";
+                                weekday[6] = "Saturday";
+                                var n = weekday[d.getDay() - 3];
+                                document.getElementById("s").innerHTML = n;
+                            </script>
+                        </div>
+                    </div> <!-- .forecast-header -->
+                    <div class="forecast-content">
+                        <div class="forecast-icon">
+                            <img src="{{ url_for('static', filename='images/icons/icon-12.svg') }}" alt="" width=48>
+                        </div>
+                        <div class="degree">23<sup>o</sup>C</div>
+                        <small>18<sup>o</sup></small>
+                    </div>
+                </div>
+                <div class="forecast">
+                    <div class="forecast-header">
+                        <div class="day"><p id="next"></p>
+                            <script>
+                                var d = new Date();
+                                var weekday = new Array(7);
+                                weekday[0] = "Sunday";
+                                weekday[1] = "Monday";
+                                weekday[2] = "Tuesday";
+                                weekday[3] = "Wednesday";
+                                weekday[4] = "Thursday";
+                                weekday[5] = "Friday";
+                                weekday[6] = "Saturday";
+                                var n = weekday[d.getDay() - 2];
+                                document.getElementById("next").innerHTML = n;
+                            </script>
+                        </div>
+                    </div> <!-- .forecast-header -->
+                    <div class="forecast-content">
+                        <div class="forecast-icon">
+                            <img src="{{ url_for('static', filename='images/icons/icon-13.svg') }}" alt="" width=48>
+                        </div>
+                        <div class="degree">23<sup>o</sup>C</div>
+                        <small>18<sup>o</sup></small>
+                    </div>
+                </div>
+                <div class="forecast">
+                    <div class="forecast-header">
+                        <div class="day"><p id="again"></p>
+                            <script>
+                                var d = new Date();
+                                var weekday = new Array(7);
+                                weekday[0] = "Sunday";
+                                weekday[1] = "Monday";
+                                weekday[2] = "Tuesday";
+                                weekday[3] = "Wednesday";
+                                weekday[4] = "Thursday";
+                                weekday[5] = "Friday";
+                                weekday[6] = "Saturday";
+                                var n = weekday[d.getDay() - 1];
+                                document.getElementById("again").innerHTML = n;
+                            </script>
+                        </div>
+                    </div> <!-- .forecast-header -->
+                    <div class="forecast-content">
+                        <div class="forecast-icon">
+                            <img src="{{ url_for('static', filename='images/icons/icon-14.svg') }}" alt="" width=48>
+                        </div>
+                        <div class="degree">23<sup>o</sup>C</div>
+                        <small>18<sup>o</sup></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="main-content">
+        <div class="fullwidth-block">
+            <div class="container">
+                <h2 class="section-title">Live cameras</h2>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="live-camera">
+                            <figure class="live-camera-cover"><img
+                                    src="{{ url_for('static', filename='images/live-camera-1.jpg') }}" alt=""></figure>
+                            <h3 class="location">New York</h3>
+                            <small class="date"><p id="demo1"></p>
+                                <script>
+                                    var d = new Date();
+                                    document.getElementById("demo1").innerHTML = d.toDateString();
+                                </script>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="live-camera">
+                            <figure class="live-camera-cover"><img
+                                    src="{{ url_for('static', filename='images/live-camera-2.jpg') }}" alt=""></figure>
+                            <h3 class="location">Los Angeles</h3>
+                            <small class="date"><p id="demo12"></p>
+
+                                <script>
+                                    var d = new Date();
+                                    document.getElementById("demo12").innerHTML = d.toDateString();
+                                </script>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="live-camera">
+                            <figure class="live-camera-cover"><img
+                                    src="{{ url_for('static', filename='images/live-camera-3.jpg') }}" alt=""></figure>
+                            <h3 class="location">Chicago</h3>
+                            <small class="date">8 oct, 8:00AM</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="live-camera">
+                            <figure class="live-camera-cover"><img
+                                    src="{{ url_for('static', filename='images/live-camera-4.jpg') }}" alt=""></figure>
+                            <h3 class="location">London</h3>
+                            <small class="date"><p id="demo2"></p>
+
+                                <script>
+                                    var d = new Date();
+                                    document.getElementById("demo2").innerHTML = d.toDateString();
+                                </script>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fullwidth-block" data-bg-color="#262936">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="news">
+                            <div class="date">06.10</div>
+                            <h3><a href="#">Climatology & Weather Forecasting</a></h3>
+                            <p>Climatology and Weather Forecasting is important since it helps determine future climate
+                                expectations. Through the use of latitude, one can determine the likelihood of snow and
+                                hail reaching the surface. You can also be able to identify the thermal energy from the
+                                sun that is accessible to a region. Climatology is the scientific study of climates,
+                                which is defined as the mean weather conditions over a period of time. A branch of study
+                                within atmospheric sciences, it also takes into account the variables and averages of
+                                short-term and long-term weather conditions.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="news">
+                            <div class="date">06.10</div>
+                            <h3><a href="#">Global Climate Change</a></h3>
+                            <p>The Intergovernmental Panel on Climate Change (IPCC) was set up by the World
+                                Meteorological Organization (WMO) and United Nations Environment to provide an objective
+                                source of scientific information. In 2013 the IPCC provided more clarity about the role
+                                of human activities in climate change when it released its Fifth Assessment Report. It
+                                is categorical in its conclusion: climate change is real and human activities are the
+                                main cause.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="news">
+                            <div class="date">06.10</div>
+                            <h3><a href="#">Global warming</a></h3>
+                            <p>Changes observed in Earth’s climate since the early 20th century are primarily driven by
+                                human activities, particularly fossil fuel burning, which increases heat-trapping
+                                greenhouse gas levels in Earth’s atmosphere, raising Earth’s average surface
+                                temperature. These human-produced temperature increases are commonly referred to as
+                                global warming. Natural processes can also contribute to climate change, including
+                                internal variability</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fullwidth-block">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2 class="section-title">Application features</h2>
+                        <ul class="arrow-feature">
+                            <li>
+                                <h3>Rapid and abrupt climate changes</h3>
+                                <p>Weather Forcast can provide accurate forecasts to enable users to make informed
+                                    decisions.</p>
+                            </li>
+                            <li>
+                                <h3> Integration of advanced features</h3>
+                                <p>Technological progress have made it easy to know the sudden changes in the weather
+                                    conditions along with real-time alerts.</p>
+                            </li>
+                            <li>
+                                <h3>Timelapse</h3>
+                                <p>This feature enables the users to go through the historical changes in weather across
+                                    different countries of the world. </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="section-title">Weather analyssis</h2>
+                        <ul class="arrow-list">
+                            <li><a href="#">History of Weather Forcasting</a></li>
+                            <li><a href="#">Other practical Applications</a></li>
+                            <li><a href="#">Modern Trend And Developments</a></li>
+                            <li><a href="#">Numerical weather predictions models</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="section-title">Awesome Photos</h2>
+                        <div class="photo-grid">
+
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-1.jpg') }}" alt="#"></a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-2.jpg') }}" alt="#"></a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-3.jpg') }}" alt="#"></a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-4.jpg') }}" alt="#"></a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-5.jpg') }}" alt="#"></a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-6.jpg') }}" alt="#"></a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-7.jpg') }}" alt="#"></a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-8.jpg') }}" alt="#"></a>
+                            <a href="#"><img src="{{ url_for('static', filename='images/thumb-9.jpg') }}" alt="#"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main> <!-- .main-content -->
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <form action="#" class="subscribe-form">
+                        <input type="text" placeholder="Enter your email to subscribe...">
+                        <input type="submit" value="Subscribe">
+                    </form>
+                </div>
+                <div class="col-md-3 col-md-offset-1">
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/sameer.saitwal/"><i class="fa fa-facebook"></i></a>
+                        <a href="https://twitter.com/SaitwalSamir"><i class="fa fa-twitter"></i></a>
+                        <a href="https://github.com/samir321-pixel"><i class="fa fa-google-plus"></i></a>
+                        <a href="https://in.pinterest.com/C_riminal/boards/"><i class="fa fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="colophon"> &#169 2020 Weather Forcast Designed by Samir. All rights reserved</p>
+
+        </div>
+    </footer> <!-- .site-footer -->
+
+</div>
+
+<script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+
+</html>
